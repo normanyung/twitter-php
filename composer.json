@@ -1,10 +1,13 @@
 {
-	"name": "dg/twitter-php",
-	"description": "Small and easy Twitter wrapper for PHP.",
+	"name": "normanyung/twitter-php",
+	"description": "Small and easy Twitter wrapper for PHP. (originally forked from dg/twitter-php)",
 	"keywords": ["twitter", "oauth"],
-	"homepage": "https://github.com/dg/twitter-php",
+	"homepage": "https://github.com/normanyung/twitter-php",
 	"license": ["BSD-3"],
 	"authors": [
+		{
+			"name": "Norman Yung"
+		},
 		{
 			"name": "David Grudl",
 			"homepage": "http://davidgrudl.com"
