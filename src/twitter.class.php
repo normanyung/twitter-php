@@ -231,7 +231,7 @@ class Twitter
 			$payload = @json_decode($result); // intentionally @
 		}
 
-		if (empty($payload)) {
+		if (!is_array($payload) && empty($payload)) {
 			throw new TwitterException('Invalid server response');
 		}
 
