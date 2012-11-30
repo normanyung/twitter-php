@@ -44,9 +44,11 @@ class Twitter
 	/** @var Twitter_OAuthConsumer */
 	private $consumer;
 
-	/** @var Twitter_OAuthConsumer */
+	/** @var Twitter_OAuthToken */
 	private $token;
 
+	/** @var JSON return type */
+	private $jsonArray = false; // default false. returns (object).
 
 
 	/**
@@ -66,6 +68,14 @@ class Twitter
 		$this->signatureMethod = new Twitter_OAuthSignatureMethod_HMAC_SHA1();
 		$this->consumer = new Twitter_OAuthConsumer($consumerKey, $consumerSecret);
 		$this->token = new Twitter_OAuthConsumer($accessToken, $accessTokenSecret);
+	}
+
+	/**
+	 * sets return type to array or object.
+	 * @param string type
+	 */
+	public function setJsonReturnType($type) {
+		$this->jsonArray=$type=='array';
 	}
 
 
@@ -228,7 +238,7 @@ class Twitter
 			$payload = @simplexml_load_string($result); // intentionally @
 
 		} elseif (strpos($type, 'json')) {
-			$payload = @json_decode($result); // intentionally @
+			$payload = @json_decode($result, $this->jsonArray); // intentionally @
 		}
 
 		if (!is_array($payload) && empty($payload)) {
@@ -263,7 +273,7 @@ class Twitter
 
 		$cacheFile = self::$cacheDir . '/twitter.' . md5($request . json_encode($data) . serialize(array($this->consumer, $this->token)));
 		$cache = @file_get_contents($cacheFile); // intentionally @
-		$cache = strncmp($cache, '<', 1) ? @json_decode($cache) : @simplexml_load_string($cache); // intentionally @
+		$cache = strncmp($cache, '<', 1) ? @json_decode($cache, $this->jsonArray) : @simplexml_load_string($cache); // intentionally @
 		if ($cache && @filemtime($cacheFile) + $cacheExpire > time()) { // intentionally @
 			return $cache;
 		}
